@@ -4,16 +4,24 @@
 
 int main(int argc, char* argv[])
 {
-    long public = atoi(argv[1]);
-    long N = atoi(argv[2]);
     long phi;
     long K;
 
     long* factors = (long*)malloc(5 * sizeof(long));
 
+    if(argc != 3)
+    {
+        printf("Input as: keycracker.exe public-key modulus(N)\n");
+        return 0;
+    }
+
+    long public = atoi(argv[1]);
+    long N = atoi(argv[2]);
+
     if(primeFactors(N, &factors) != 2)
     {
-        printf("Invalid N");
+        printf("Invalid modulus(N)\n");
+        return -1;
     }
 
     phi = (factors[0] - 1) * (factors[1] - 1);
