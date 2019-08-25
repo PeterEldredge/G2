@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 
     if(argc != 3)
     {
-        printf("Input as: keycracker.exe public-key modulus(N)\n");
+        printf("Input as: ./keycracker.exe public-key modulus(N)\n");
         return 0;
     }
 
