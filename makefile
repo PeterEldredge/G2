@@ -5,10 +5,10 @@
 build : build1 build2 build3 build4 build5
 
 build1: G2Client.c
-		gcc G2Client.c -o Client.exe
+		gcc miniRSA.c G2Client.c -lm -o Client.exe
 
 build2: G2Server.c
-		gcc G2Server.c -o Server.exe
+		gcc miniRSA.c G2Server.c -lm -o Server.exe
 
 build3: miniRSA.c
 		gcc miniRSA.c genkey.c -lm -o genkey.exe

@@ -5,15 +5,15 @@
 #include <netinet/in.h> 
 #include <string.h> 
 #include "miniRSA.h"
-#define BUFF_SIZE 2048
+#define BUFF_SIZE 10000
 
 int main(int argc, char const *argv[]) 
 { 
     int connectSock, dataSocket, sockRead; 
     struct sockaddr_in fullAddr; 
     int addrlen = sizeof(fullAddr); 
-    char buffer[1024] = {0};
-    char message[1000];
+    char buffer[BUFF_SIZE] = {0};
+    char message[2000];
 
     long fileSize;
     char* fContent;
@@ -21,6 +21,11 @@ int main(int argc, char const *argv[])
     fullAddr.sin_family = AF_INET; 
     fullAddr.sin_port = htons(atoi(argv[1])); 
     fullAddr.sin_addr.s_addr = INADDR_ANY; 
+
+    long E = atoi(argv[2]);
+    long C = atoi(argv[3]);
+    long D = atoi(argv[4]);
+    long DC = atoi(argv[5]);
 
     memset(fullAddr.sin_zero, '\0', sizeof fullAddr.sin_zero);
        
@@ -62,16 +67,23 @@ int main(int argc, char const *argv[])
             exit(EXIT_FAILURE); 
         }else{
             while (1){
-                sockRead = read( dataSocket, buffer, BUFF_SIZE); 
+                sockRead = read( dataSocket, buffer, BUFF_SIZE);
                 strcpy(message, strtok(buffer, "\n"));
-        
+
                 if(strcmp(message, ".bye") == 0){
                     printf("Received:\n%s\n Shutting Down...\n Have a good day!\n",message);
                     close(dataSocket);
                     exit(0);
+                }else{
+                    printf("Received:\n%s\n",buffer );
+                    char* token = strtok(buffer, " ");
+                    long code = atoi(token);
+                    
+
+                    printf("Decoded to %c", decrypt(code, D, DC));
                 }
 
-                printf("Received:\n%s\n",buffer );
+                
                 printf("Return Message? Type .bye to quit:\n");
                 fgets(buffer, BUFF_SIZE, stdin);
                 strcpy(message, strtok(buffer, "\n"));

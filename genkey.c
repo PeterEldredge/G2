@@ -10,6 +10,8 @@
 
 int calcKeys(int a, int b) 
 { 
+    srand(time(0));
+
     int primes[200];
 
     int p = getPrimes(MAXNUMS)[a-1];
@@ -28,7 +30,7 @@ int calcKeys(int a, int b)
     //Like in Popyack's RSA Worksheet, we calculate K
     //Start with the first possible K by adding one as the
     //candidates are found by (1 mod r) or in this case (1 mod phi)
-    long K = 1 + phi;
+    long K = 1 + (fmod(rand(), 100)*phi);
     long* factors = (long*)malloc(5*sizeof(long));
     while (primeFactors(K, &factors) != 2)  
     {

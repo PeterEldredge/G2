@@ -29,10 +29,16 @@ int main(int argc, char* argv[])
     char port[PORT_SIZE];
     char page[PAGE_SIZE];
     char message[MESSAGE_SIZE];
+    char code[MESSAGE_SIZE*5];
 
-    char header[HEADER_SIZE];
+    long E;
+    long C;
+    long D;
+    long DC;
 
-    if (argc < 3){
+    //char header[HEADER_SIZE];
+
+    if (argc < 7){
         printf("Too Little Arguments, supply arguments as host, and in this order");
         exit(0);
     }
@@ -40,6 +46,10 @@ int main(int argc, char* argv[])
     {
         strcpy(host, argv[1]);
         strcpy(port, argv[2]);
+        E = atoi(argv[3]);
+        C = atoi(argv[4]);
+        D = atoi(argv[5]);
+        DC = atoi(argv[6]);
     }
 
     // printf("Host: ");
@@ -82,7 +92,13 @@ int main(int argc, char* argv[])
             }
             else
             {
-                send(socketfd, message, strlen(message), 0);
+                sprintf(code, "%ld", encrypt(message[0], E, C));
+                // for(int i = 1; i < strlen(message); i++){
+                //     strcat(code, " ");
+                //     strcat(code, encrypt(message[i], E, C);
+                // }
+                printf("%s", code);
+                send(socketfd, code, strlen(message), 0);
             }   
     
             byte_count = recv(socketfd, buffer, sizeof(buffer) - 1, 0); //Read data to buffer 
