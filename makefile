@@ -2,7 +2,7 @@
 
 .PHONY: build view clean
 
-build : build1 build2 build3 build4
+build : build1 build2 build3 build4 build5
 
 build1: G2Client.c
 		gcc G2Client.c -o Client.exe
@@ -15,6 +15,9 @@ build3: miniRSA.c
 
 build4: encryptor.c	
 		gcc miniRSA.c encryptor.c -lm -o encryptor.exe
+
+build5: keycracker.c
+		gcc miniRSA.c keycracker.c -lm -o keycracker.exe
 
 genkey : 
 		./genkey.exe "${MPRIME}" "${NPRIME}"
