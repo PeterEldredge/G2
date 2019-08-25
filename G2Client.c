@@ -29,7 +29,8 @@ int main(int argc, char* argv[])
     char port[PORT_SIZE];
     char page[PAGE_SIZE];
     char message[MESSAGE_SIZE];
-    char code[MESSAGE_SIZE*5];
+    char codes[MESSAGE_SIZE*5];
+    char finalMSG[MESSAGE_SIZE];
 
     long E;
     long C;
@@ -92,23 +93,44 @@ int main(int argc, char* argv[])
             }
             else
             {
-                sprintf(code, "%ld", encrypt(message[0], E, C));
-                // for(int i = 1; i < strlen(message); i++){
-                //     strcat(code, " ");
-                //     strcat(code, encrypt(message[i], E, C);
-                // }
-                printf("%s", code);
-                send(socketfd, code, strlen(message), 0);
+                char temp[10];
+                long msgCode;
+                strcpy(codes, "");
+
+                for(int i = 0; i < strlen(message); i++){
+                    msgCode =  encrypt(message[i], E, C);
+                    sprintf(temp, "%ld", msgCode);
+                    strcat(codes, temp);
+                    strcat(codes, " ");
+                }
+                //printf("%s\n", codes);
+                send(socketfd, codes, strlen(codes), 0);
             }   
     
             byte_count = recv(socketfd, buffer, sizeof(buffer) - 1, 0); //Read data to buffer 
             buffer[byte_count] = 0; //Add null terminator
 
-            printf("Received:\n%s\n",buffer); //Print buffer
+            
             strcpy(message, strtok(buffer, "\n"));
             if(strcmp(message, ".bye") == 0){
                 printf("Client shutting down... Have a good day!\n");
                 exit(0);
+            } else{
+                printf("Received: %s\n", buffer); //Print buffer
+                char* token = strtok(buffer, " ");
+                    strcpy(finalMSG, "");
+                    char msg;
+                    long code;
+
+                    while (token != NULL){
+                        code = atoi(token);
+                        msg = decrypt(code, D, DC);
+                        //printf("%c", msg);
+                        strncat(finalMSG, &msg, 1);
+                        token = strtok(NULL, " ");
+                    }
+
+                    printf("Decoded to: %s\n", finalMSG);
             }
         }
         

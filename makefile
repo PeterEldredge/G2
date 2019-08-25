@@ -22,8 +22,15 @@ build5: keycracker.c
 genkey : 
 		./genkey.exe "${MPRIME}" "${NPRIME}"
 
+server:
+		./Server.exe "${PORT}" "${E}" "${C}" "${D}" "${DC}"
+
+client:
+		./Client.exe "${SERVER}" "${PORT}" "${E}" "${C}" "${D}" "${DC}"
+
 clean:
 		-\rm Client.exe
 		-\rm Server.exe
 		-\rm genkey.exe
 		-\rm encryptor.exe
+		-\rm keycracker.exe

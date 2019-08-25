@@ -14,6 +14,8 @@ int main(int argc, char const *argv[])
     int addrlen = sizeof(fullAddr); 
     char buffer[BUFF_SIZE] = {0};
     char message[2000];
+    char finalMSG[2000];
+    char codes[2000];
 
     long fileSize;
     char* fContent;
@@ -70,17 +72,28 @@ int main(int argc, char const *argv[])
                 sockRead = read( dataSocket, buffer, BUFF_SIZE);
                 strcpy(message, strtok(buffer, "\n"));
 
+                
+
                 if(strcmp(message, ".bye") == 0){
                     printf("Received:\n%s\n Shutting Down...\n Have a good day!\n",message);
                     close(dataSocket);
                     exit(0);
                 }else{
-                    printf("Received:\n%s\n",buffer );
+                    printf("Received: %s\n",buffer );
                     char* token = strtok(buffer, " ");
-                    long code = atoi(token);
-                    
+                    strcpy(finalMSG, "");
+                    char msg;
+                    long code;
 
-                    printf("Decoded to %c", decrypt(code, D, DC));
+                    while (token != NULL){
+                        code = atoi(token);
+                        msg = decrypt(code, D, DC);
+                        //printf("%c", msg);
+                        strncat(finalMSG, &msg, 1);
+                        token = strtok(NULL, " ");
+                    }
+
+                    printf("Decoded to: %s\n", finalMSG);
                 }
 
                 
@@ -94,7 +107,18 @@ int main(int argc, char const *argv[])
                     close(dataSocket);
                     exit(0);
                 }else{
-                    send(dataSocket, message, strlen(message), 0);
+                    char temp[10];
+                    long msgCode;
+                    strcpy(codes, "");
+
+                    for(int i = 0; i < strlen(message); i++){
+                        msgCode =  encrypt(message[i], E, C);
+                        sprintf(temp, "%ld", msgCode);
+                        strcat(codes, temp);
+                        strcat(codes, " ");
+                    }
+                    //printf("%s\n", codes);
+                    send(dataSocket, codes, strlen(codes), 0);
                 }
 
             }
