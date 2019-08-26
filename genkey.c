@@ -30,7 +30,7 @@ int calcKeys(int a, int b)
     //Like in Popyack's RSA Worksheet, we calculate K
     //Start with the first possible K by adding one as the
     //candidates are found by (1 mod r) or in this case (1 mod phi)
-    long K = 1 + (fmod(rand(), 100)*phi);
+    long K = 1 + (fmod(rand(), 20)*phi);
     long* factors = (long*)malloc(5*sizeof(long));
     while (primeFactors(K, &factors) != 2)  
     {

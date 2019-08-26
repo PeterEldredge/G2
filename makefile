@@ -22,6 +22,9 @@ build5: keycracker.c
 genkey : 
 		./genkey.exe "${MPRIME}" "${NPRIME}"
 
+keycrack :
+		./keycracker.exe "${E}" "${C}"
+
 server:
 		./Server.exe "${PORT}" "${E}" "${C}" "${D}" "${DC}"
 
