@@ -4,6 +4,19 @@ Due Date: 8/25/19
 
 We believe we've completed the assignment as it was asked of us.
 
+To run the programs, type "make build" into the commandline.
+
+Then, you can call the functions as specified in the assignment page through the makefile
+
+EX.
+    To test genkey and keycrack:
+    "MPRIME=17 NPRIME=20 make genkey"
+    "E=17 C=4189 make keycrack" 
+
+    To test server and client:
+    "PORT=8080 E=29 C=1073 D=2273 DC=517 make server"
+    "SERVER=tux5.cs.drexel.edu PORT=8080 E=17 C=517 D=1877 DC=1073 make client"
+
 We will explain the purpose of each file below:
 
 miniRSA.c : 
